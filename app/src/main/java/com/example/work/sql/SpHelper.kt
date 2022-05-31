@@ -1,0 +1,179 @@
+package com.example.work.sql
+
+import android.content.ContentValues
+import android.content.Context
+import android.util.Log
+import android.widget.EditText
+import android.widget.TextView
+import com.example.work.sql.Calender
+
+class SpHelper (context: Context){
+    val mHelper : DataBaseHelper = DataBaseHelper(context)
+    val mWritableDatabase = mHelper.writableDatabase
+
+    fun SpHelper(context:Context){
+        val readeableDatabase = mHelper.readableDatabase
+
+    }
+
+    fun insertData(a1: TextView,a2: TextView, b: EditText, c: EditText,d:String?){
+
+        var string11 = a1.text.toString()
+        val string12 = a2.text.toString()
+        val string2 = b.text.toString()
+        val string3 = c.text.toString()
+        var string4 = d
+        if (string11.length==9){
+            if (string11[6]=='-'){
+                string11=string11.substring(0,5)+"0"+string11.substring(5,9)
+            }
+            else
+                string11=string11.substring(0,8)+"0"+string11.substring(8,9)
+        }
+        else if(string11.length==8)
+            string11 = string11.substring(0,5)+"0"+string11.substring(5,7)+"0"+string11.substring(7,8)
+        else
+            string11 = string11
+        Log.d("string11",string11)
+        val contentValues = ContentValues()
+        contentValues.put("date", string11)
+        contentValues.put("time", string12)
+        contentValues.put("title", string2)
+        contentValues.put("content",string3)
+        contentValues.put("uri",string4)
+        contentValues.put("state",0)
+        mWritableDatabase.insert("calender",null,contentValues)
+    }
+
+    fun update(a:Int, b:TextView, c:TextView, d: TextView, e:TextView, f:String){
+        val contentValues = ContentValues()
+        val string1 = b.text.toString()
+        val string2 = c.text.toString()
+        val string3 = d.text.toString()
+        val string4 = d.text.toString()
+        contentValues.put("date", string1)
+        contentValues.put("time", string2)
+        contentValues.put("title", string3)
+        contentValues.put("content",string4)
+        contentValues.put("uri",f)
+        mWritableDatabase.update("calender",contentValues,"id=?", arrayOf("$a"))
+    }
+
+    fun updatestate(a: Int?){
+        val contentValues = ContentValues()
+        contentValues.put("state",1)
+        mWritableDatabase.update("calender",contentValues,"id=?", arrayOf("$a"))
+    }
+
+    fun delete(a: Int?){
+        mWritableDatabase.delete("calender","id=?", arrayOf("$a"))
+    }
+    fun omit(a:String){
+        mWritableDatabase.delete("calender","user=?", arrayOf(a))
+    }
+
+    fun query(): ArrayList<Calender> {
+        val cursor =mWritableDatabase.query("calender", null, "state=?" , arrayOf("0"), null, null, null)
+        val sb  = ArrayList<Calender>()
+
+        if (cursor.moveToFirst()){
+            do {
+
+                val idIndex = cursor.getColumnIndex("id")
+                val id = cursor.getInt(idIndex)
+
+                val dateIndex = cursor.getColumnIndex("date")
+                val date = cursor.getString(dateIndex)
+
+                val timeIndex = cursor.getColumnIndex("time")
+                val time = cursor.getString(timeIndex)
+
+                val contentIndex = cursor.getColumnIndex("content")
+                val content = cursor.getString(contentIndex)
+
+                val uriIndex = cursor.getColumnIndex("uri")
+                val uri = cursor.getString(uriIndex)
+
+                val titleIndex = cursor.getColumnIndex("title")
+                val title = cursor.getString(titleIndex)
+                sb.add(Calender(id, date,time,title,uri,content))
+            }while (cursor.moveToNext())
+        }
+        cursor.close()
+        return sb
+    }
+
+    fun query1(a:Int?): String {
+        val cursor =mWritableDatabase.query("calender", null, "id=?" , arrayOf("$a"), null, null, null)
+        val sb  = StringBuilder()
+//        sb.add(Calender("id","用户"))
+//        Log.d("d",cursor.moveToFirst().toString())
+        if (cursor.moveToFirst()){
+            do {
+
+                val idIndex = cursor.getColumnIndex("id")
+                val id = cursor.getInt(idIndex)
+
+                val dateIndex = cursor.getColumnIndex("date")
+                val date = cursor.getString(dateIndex)
+
+                val timeIndex = cursor.getColumnIndex("time")
+                val time = cursor.getString(timeIndex)
+
+                val contentIndex = cursor.getColumnIndex("content")
+                val content = cursor.getString(contentIndex)
+
+                val uriIndex = cursor.getColumnIndex("uri")
+                val uri = cursor.getString(uriIndex)
+
+                val titleIndex = cursor.getColumnIndex("title")
+                val title = cursor.getString(titleIndex)
+                sb.append("$id,$date,$time,$title,$uri,$content")
+            }while (cursor.moveToNext())
+        }
+        cursor.close()
+        Log.d("asbsbsb",sb.toString())
+        return sb.toString()
+    }
+
+    internal class new {
+        var id = 0
+        var title: String? = null
+        var time: String? = null
+        var content: String? = null
+        var date:String? = null
+    }
+
+    fun query2(a:String): ArrayList<Calender> {
+        val cursor =mWritableDatabase.query("calender", null, "date=? and state=?" , arrayOf("$a","0"), null, null, null)
+        val sb  = ArrayList<Calender>()
+
+        if (cursor.moveToFirst()){
+            do {
+
+                val idIndex = cursor.getColumnIndex("id")
+                val id = cursor.getInt(idIndex)
+
+                val dateIndex = cursor.getColumnIndex("date")
+                val date = cursor.getString(dateIndex)
+
+                val timeIndex = cursor.getColumnIndex("time")
+                val time = cursor.getString(timeIndex)
+
+                val contentIndex = cursor.getColumnIndex("content")
+                val content = cursor.getString(contentIndex)
+
+                val uriIndex = cursor.getColumnIndex("uri")
+                val uri = cursor.getString(uriIndex)
+
+                val titleIndex = cursor.getColumnIndex("title")
+                val title = cursor.getString(titleIndex)
+
+                sb.add(Calender(id, date,time,title,uri,content))
+
+            }while (cursor.moveToNext())
+        }
+        cursor.close()
+        return sb
+    }
+}

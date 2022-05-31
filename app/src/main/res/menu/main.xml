@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/switch_item"
+        android:title="视图切换"/>
+    <item
+        android:id="@+id/statistic_item"
+        android:title="统计"/>
+</menu>

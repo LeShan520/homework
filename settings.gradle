@@ -12,6 +12,7 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "Job"
+rootProject.name = "Work"
 include ':app'
 include ':calendarview'
+include ':app_calendar'
