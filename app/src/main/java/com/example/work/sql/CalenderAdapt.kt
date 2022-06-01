@@ -2,16 +2,17 @@ package com.example.work.sql
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.graphics.BitmapFactory
+import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.CheckBox
-import android.widget.ImageButton
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import com.example.work.R
 import com.example.work.calender.DateList
+import com.example.work.calender.imageUri
 import com.example.work.sql.Calender
 
 
@@ -29,6 +30,7 @@ class CalenderAdapt(
         val tv1 : TextView = view.findViewById(R.id.tv_item_title)
         val tv2 : TextView = view.findViewById(R.id.tv_time)
         val tv3 : TextView = view.findViewById(R.id.tv_date)
+        val image : ImageView = view.findViewById(R.id.image_item)
 
         //删除事件
         val btdelete : ImageButton = view.findViewById(R.id.ib_delete)
@@ -59,6 +61,7 @@ class CalenderAdapt(
                 .setMessage("是否完成了任务？")
                 .setNegativeButton("取消") { dialog, which ->
 //                    Toast.makeText(context, "你取消了", Toast.LENGTH_SHORT).show()
+                    notifyDataSetChanged()
                 }
                 .setPositiveButton("确定"){ dialog, which ->
                     val id = getItem(position)?.id
@@ -67,10 +70,6 @@ class CalenderAdapt(
                     data1.removeAt(position)
                     notifyDataSetChanged()
 //                    Toast.makeText(context,"你确认了", Toast.LENGTH_SHORT).show()
-
-
-                    notifyDataSetChanged()
-
                 }
                 .create()
             alertDialog.show()
@@ -79,12 +78,14 @@ class CalenderAdapt(
 //            }
         }
 
-
         //导出数据
+
         val calender = data1.get(position)
             tv1.text = calender.title
             tv2.text = calender.date
             tv3.text = calender.time
+        val uri = Uri.parse(calender.uri)
+            image.setImageURI(uri)
         return view
     }
 

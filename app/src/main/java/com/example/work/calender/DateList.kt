@@ -1,10 +1,12 @@
 package com.example.work.calender
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
+import android.widget.ImageView
 import android.widget.ListView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -21,8 +23,7 @@ class DateList : AppCompatActivity() {
         setContentView(R.layout.activity_date_list)
         val helper = SpHelper(this)
          calender = helper.query()
-            Log.d("calendarAdapter", "getView: "+calender.size)
-        val adapter  = CalenderAdapt(this, R.layout.activity_sql_item, calender )
+        val adapter  = CalenderAdapt(this, R.layout.activity_sql_item, calender)
         val listview :ListView = findViewById(R.id.date_listview)
         listview.adapter = adapter
         val fab :View = findViewById(R.id.fab_add)
@@ -32,7 +33,12 @@ class DateList : AppCompatActivity() {
         }
         listview.onItemClickListener =
             AdapterView.OnItemClickListener { parent, view, position, id ->
+                val image :ImageView = findViewById(R.id.image_item)
+//                if (image.visibility == View.GONE) {
+                    image.visibility = View.VISIBLE
+//                }
 
+                Toast.makeText(this, "$position", Toast.LENGTH_SHORT).show()
                 onResume()
             }
 
@@ -40,7 +46,6 @@ class DateList : AppCompatActivity() {
             AdapterView.OnItemLongClickListener { parent, view, position, id ->
 
                 val a=adapter.getItem(position)?.id
-                Log.d("putextradata",a.toString())
                 val intent = Intent(this, DateEdit::class.java)
                 intent.putExtra("data",a)
                 startActivity(intent)

@@ -123,11 +123,12 @@ class DateEdit : AppCompatActivity() {
         } else {
             imageUri = FileProvider.getUriForFile(
                 this@DateEdit,
-                "com.ywjh.cameraalbumtest.fileprovider",//定义唯一标识，关联后面的内容提供器
+                "com.example.work.fileproviders",//定义唯一标识，关联后面的内容提供器
                 outputImage
             )
         }
         // 3. 启动相机程序
+
         val intent = Intent("android.media.action.IMAGE_CAPTURE")
         intent.addCategory(Intent.CATEGORY_DEFAULT)
         intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
