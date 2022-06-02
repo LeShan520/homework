@@ -35,7 +35,7 @@ class DateList : AppCompatActivity() {
             AdapterView.OnItemClickListener { parent, view, position, id ->
                 val image :ImageView = findViewById(R.id.image_item)
 //                if (image.visibility == View.GONE) {
-                    image.visibility = View.VISIBLE
+//                    image.visibility = View.VISIBLE//TODO
 //                }
 
                 Toast.makeText(this, "$position", Toast.LENGTH_SHORT).show()

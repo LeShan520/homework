@@ -58,17 +58,17 @@ class MainActivity : AppCompatActivity(), CalendarView.OnCalendarSelectListener 
                 onResume()
             }
 
-        listview.onItemLongClickListener=
-            AdapterView.OnItemLongClickListener { parent, view, position, id ->
-
-                val a=adapter.getItem(position)?.id
-                Log.d("putextradata",a.toString())
-                val intent = Intent(this, DateEdit::class.java)
-                intent.putExtra("data",a)
-                startActivity(intent)
-                adapter.notifyDataSetChanged()
-                return@OnItemLongClickListener true
-            }
+//        listview.onItemLongClickListener=
+//            AdapterView.OnItemLongClickListener { parent, view, position, id ->
+//
+//                val a=adapter.getItem(position)?.id
+//                Log.d("putextradata",a.toString())
+//                val intent = Intent(this, DateEdit::class.java)
+//                intent.putExtra("data",a)
+//                startActivity(intent)
+//                adapter.notifyDataSetChanged()
+//                return@OnItemLongClickListener true
+//            }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -83,7 +83,8 @@ class MainActivity : AppCompatActivity(), CalendarView.OnCalendarSelectListener 
                 startActivity(intent)
             }
             R.id.statistic_item->{
-
+                val intent = Intent(this,Statistic::class.java)
+                startActivity(intent)
             }
         }
         return true

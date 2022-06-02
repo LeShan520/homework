@@ -2,7 +2,9 @@ package com.example.work.sql
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Intent
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,10 +12,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat.startActivity
 import com.example.work.R
+import com.example.work.calender.DateEdit
 import com.example.work.calender.DateList
 import com.example.work.calender.imageUri
 import com.example.work.sql.Calender
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class CalenderAdapt(
@@ -74,9 +82,24 @@ class CalenderAdapt(
                 .create()
             alertDialog.show()
 //            alertDialog.setOnDismissListener {
-//
 //            }
         }
+
+        tv1.setOnClickListener {
+            if (image.visibility == View.GONE){
+                image.visibility = View.VISIBLE
+            }
+        }
+        tv1.setOnLongClickListener{
+            val a=getItem(position)?.id
+            Log.d("putextradata",a.toString())
+            val intent = Intent(context, DateEdit::class.java)
+            intent.putExtra("data",a)
+            parent.context.startActivity(intent)
+            notifyDataSetChanged()
+            return@setOnLongClickListener true
+        }
+
 
         //导出数据
 
@@ -86,6 +109,28 @@ class CalenderAdapt(
             tv3.text = calender.time
         val uri = Uri.parse(calender.uri)
             image.setImageURI(uri)
+        var current_date = calender.date
+        if (current_date.length==9){
+            if (current_date[6]=='-'){
+                current_date=current_date.substring(0,5)+"0"+current_date.substring(5,9)
+            }
+            else
+                current_date=current_date.substring(0,8)+"0"+current_date.substring(8,9)
+        }
+        else if(current_date.length==8)
+            current_date = current_date.substring(0,5)+"0"+current_date.substring(5,7)+"0"+current_date.substring(7,8)
+        else
+            current_date = current_date
+        val date = Date(System.currentTimeMillis())
+        val dateFormat1: DateFormat = SimpleDateFormat("yyyyMMdd")
+        val format1: String = dateFormat1.format(date)
+        if(format1.toInt() > current_date.toString().replace("-","").toInt()){
+            val linear : LinearLayout = view.findViewById(R.id.linear_item)
+            linear.setBackgroundColor(Color.parseColor("#FF6A6A"))
+        }
+
+
+
         return view
     }
 

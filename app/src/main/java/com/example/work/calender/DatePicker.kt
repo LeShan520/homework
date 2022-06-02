@@ -80,7 +80,6 @@ class DatePicker : AppCompatActivity() {
 
         add.setOnClickListener {
             val sql = SpHelper(this)
-            Log.d("formate1",format1)
 
             var current_date = tvdateshow.text
             if (current_date.toString().length==9){
@@ -112,7 +111,6 @@ class DatePicker : AppCompatActivity() {
                     }, 1000)
                 }
             }
-            Log.d("formatewwwwwww",current_date.toString().replace("-",""))
         }
 
         cancel.setOnClickListener {
