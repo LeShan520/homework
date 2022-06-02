@@ -3,7 +3,6 @@ package com.example.work.sql
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
 import android.util.Log
@@ -12,10 +11,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat.startActivity
 import com.example.work.R
 import com.example.work.calender.DateEdit
-import com.example.work.calender.DateList
 import com.example.work.calender.imageUri
 import com.example.work.sql.Calender
 import java.text.DateFormat
@@ -52,7 +49,7 @@ class CalenderAdapt(
                 .setPositiveButton("确定"){ dialog, which ->
                     val id = getItem(position)?.id
                     val sphelper = SpHelper(context)
-                    sphelper.delete(id)
+                    sphelper.updateCancel(id)
                     data1.removeAt(position)
                     notifyDataSetChanged()
                 }
@@ -74,7 +71,7 @@ class CalenderAdapt(
                 .setPositiveButton("确定"){ dialog, which ->
                     val id = getItem(position)?.id
                     val sphelper = SpHelper(context)
-                    sphelper.updatestate(id)
+                    sphelper.updateState(id)
                     data1.removeAt(position)
                     notifyDataSetChanged()
 //                    Toast.makeText(context,"你确认了", Toast.LENGTH_SHORT).show()
@@ -124,9 +121,14 @@ class CalenderAdapt(
         val date = Date(System.currentTimeMillis())
         val dateFormat1: DateFormat = SimpleDateFormat("yyyyMMdd")
         val format1: String = dateFormat1.format(date)
-        if(format1.toInt() > current_date.toString().replace("-","").toInt()){
+        if(format1.toInt() > current_date.replace("-","").toInt()){
             val linear : LinearLayout = view.findViewById(R.id.linear_item)
             linear.setBackgroundColor(Color.parseColor("#FF6A6A"))
+            val helper = SpHelper(context)
+//            Log.d("query3",helper.query3(data1[position].id).toString())
+            if (helper.query3(data1[position].id).toString() != ""){
+                helper.updateExpired(data1[position].id)
+            }
         }
 
 

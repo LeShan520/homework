@@ -100,9 +100,9 @@ class DatePicker : AppCompatActivity() {
                 edcontent.text.toString() == "" -> {
                     Toast.makeText(this, "添加失败,请输入内容", Toast.LENGTH_LONG).show()
                 }
-                (format1.toInt() > current_date.toString().replace("-","").toInt())->{
-                    Toast.makeText(this, "添加失败,日期不可用", Toast.LENGTH_LONG).show()
-                }
+//                (format1.toInt() > current_date.toString().replace("-","").toInt())->{
+//                    Toast.makeText(this, "添加失败,日期不可用", Toast.LENGTH_LONG).show()
+//                }
                 else -> {
                     sql.insertData(tvdateshow, tvtimeshow, edtitle, edcontent, imageUri.toString())
                     Handler().postDelayed({
@@ -140,7 +140,7 @@ class DatePicker : AppCompatActivity() {
         } else {
             imageUri = FileProvider.getUriForFile(
                 this@DatePicker,
-                "com.ywjh.cameraalbumtest.fileprovider",//定义唯一标识，关联后面的内容提供器
+                "com.example.work.fileproviders",//定义唯一标识，关联后面的内容提供器
                 outputImage
             )
         }

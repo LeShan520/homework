@@ -4,16 +4,20 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ImageView
 import android.widget.ListView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.work.MainActivity
 import com.example.work.sql.Calender
 import com.example.work.sql.CalenderAdapt
 import com.example.work.sql.SpHelper
 import com.example.work.R
+import com.example.work.Statistic
 
 
 class DateList : AppCompatActivity() {
@@ -33,12 +37,6 @@ class DateList : AppCompatActivity() {
         }
         listview.onItemClickListener =
             AdapterView.OnItemClickListener { parent, view, position, id ->
-                val image :ImageView = findViewById(R.id.image_item)
-//                if (image.visibility == View.GONE) {
-//                    image.visibility = View.VISIBLE//TODO
-//                }
-
-                Toast.makeText(this, "$position", Toast.LENGTH_SHORT).show()
                 onResume()
             }
 
@@ -54,6 +52,25 @@ class DateList : AppCompatActivity() {
         }
 
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.change, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.main_item3->{
+                val intent = Intent(this,MainActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.statistic_item3->{
+                val intent = Intent(this, Statistic::class.java)
+                startActivity(intent)
+            }
+        }
+        return true
     }
 
     override fun onResume() {

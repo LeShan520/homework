@@ -62,7 +62,7 @@ class MainListAdapter (
                 .setPositiveButton("确定"){ dialog, which ->
                     val id = getItem(position)?.id
                     val sphelper = SpHelper(context)
-                    sphelper.updatestate(id)
+                    sphelper.updateState(id)
                     data1.removeAt(position)
                     notifyDataSetChanged()
                 }

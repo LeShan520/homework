@@ -42,6 +42,8 @@ class SpHelper (context: Context){
         contentValues.put("content",string3)
         contentValues.put("uri",string4)
         contentValues.put("state",0)
+        contentValues.put("expired",0)
+        contentValues.put("cancel",0)
         mWritableDatabase.insert("calender",null,contentValues)
     }
 
@@ -59,9 +61,21 @@ class SpHelper (context: Context){
         mWritableDatabase.update("calender",contentValues,"id=?", arrayOf("$a"))
     }
 
-    fun updatestate(a: Int?){
+    fun updateState(a: Int?){
         val contentValues = ContentValues()
         contentValues.put("state",1)
+        mWritableDatabase.update("calender",contentValues,"id=?", arrayOf("$a"))
+    }
+
+    fun updateCancel(a: Int?){
+        val contentValues = ContentValues()
+        contentValues.put("cancel",1)
+        mWritableDatabase.update("calender",contentValues,"id=?", arrayOf("$a"))
+    }
+
+    fun updateExpired(a: Int?){
+        val contentValues = ContentValues()
+        contentValues.put("expired",1)
         mWritableDatabase.update("calender",contentValues,"id=?", arrayOf("$a"))
     }
 
@@ -73,7 +87,7 @@ class SpHelper (context: Context){
     }
 
     fun query(): ArrayList<Calender> {
-        val cursor =mWritableDatabase.query("calender", null, "state=?" , arrayOf("0"), null, null, null)
+        val cursor =mWritableDatabase.query("calender", null, "state=? and cancel=?" , arrayOf("0","0"), null, null, null)
         val sb  = ArrayList<Calender>()
 
         if (cursor.moveToFirst()){
@@ -175,5 +189,88 @@ class SpHelper (context: Context){
         }
         cursor.close()
         return sb
+    }
+    fun query3(id:Int): ArrayList<Calender> {
+        val cursor =mWritableDatabase.query("calender", null, "id=? and expired=?" , arrayOf("$id","0"), null, null, null)
+        val sb  = ArrayList<Calender>()
+
+        if (cursor.moveToFirst()){
+            do {
+
+                val idIndex = cursor.getColumnIndex("id")
+                val id = cursor.getInt(idIndex)
+
+                val dateIndex = cursor.getColumnIndex("date")
+                val date = cursor.getString(dateIndex)
+
+                val timeIndex = cursor.getColumnIndex("time")
+                val time = cursor.getString(timeIndex)
+
+                val contentIndex = cursor.getColumnIndex("content")
+                val content = cursor.getString(contentIndex)
+
+                val uriIndex = cursor.getColumnIndex("uri")
+                val uri = cursor.getString(uriIndex)
+
+                val titleIndex = cursor.getColumnIndex("title")
+                val title = cursor.getString(titleIndex)
+                sb.add(Calender(id, date,time,title,uri,content))
+            }while (cursor.moveToNext())
+        }
+        cursor.close()
+        return sb
+    }
+
+    fun queryDate(a:String, b:String, c:String,): Int {
+        val cursor =mWritableDatabase.query("calender", null, "$a=?" , arrayOf("0"), null, null, null)
+        val date1 = mutableListOf<String>()
+
+        var current_date_prior = b
+        if (current_date_prior.length==9){
+            if (current_date_prior[6]=='-'){
+                current_date_prior=current_date_prior.substring(0,5)+"0"+current_date_prior.substring(5,9)
+            }
+            else
+                current_date_prior=current_date_prior.substring(0,8)+"0"+current_date_prior.substring(8,9)
+        }
+        else if(current_date_prior.length==8)
+            current_date_prior = current_date_prior.substring(0,5)+"0"+current_date_prior.substring(5,7)+"0"+current_date_prior.substring(7,8)
+        else
+            current_date_prior = current_date_prior
+        var current_date_behind = c
+        if (current_date_behind.length==9){
+            if (current_date_behind[6]=='-'){
+                current_date_behind=current_date_behind.substring(0,5)+"0"+current_date_behind.substring(5,9)
+            }
+            else
+                current_date_behind=current_date_behind.substring(0,8)+"0"+current_date_behind.substring(8,9)
+        }
+        else if(current_date_behind.length==8)
+            current_date_behind = current_date_behind.substring(0,5)+"0"+current_date_behind.substring(5,7)+"0"+current_date_behind.substring(7,8)
+        else
+            current_date_behind = current_date_behind
+
+        if (cursor.moveToFirst()){
+            do {
+                val dateIndex = cursor.getColumnIndex("date")
+                val date = cursor.getString(dateIndex)
+                if (date != ""){
+                    if (current_date_prior.replace("-","").toInt() <= date.replace("-","").toInt()&&
+                        date.replace("-","").toInt() <= current_date_behind.replace("-","").toInt()){
+                        Log.d("dadwada","adwadawdda")
+                        date1.add(date)
+                        Log.d("date221",date1.toString())
+                    }
+
+                }
+
+
+            }while (cursor.moveToNext())
+        }
+        val count = date1.size
+        Log.d("date222",date1.toString())
+        Log.d("date223",count.toString())
+        cursor.close()
+        return count
     }
 }

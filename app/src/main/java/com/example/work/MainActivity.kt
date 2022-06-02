@@ -78,11 +78,11 @@ class MainActivity : AppCompatActivity(), CalendarView.OnCalendarSelectListener 
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
-            R.id.switch_item->{
+            R.id.switch_item1->{
                 val intent = Intent(this,DateList::class.java)
                 startActivity(intent)
             }
-            R.id.statistic_item->{
+            R.id.statistic_item1->{
                 val intent = Intent(this,Statistic::class.java)
                 startActivity(intent)
             }

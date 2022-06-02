@@ -16,3 +16,5 @@ rootProject.name = "Work"
 include ':app'
 include ':calendarview'
 include ':app_calendar'
+include ':MPChartLib'
+include ':MPChartExample'
