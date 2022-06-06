@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
+import android.app.ProgressDialog.show
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.graphics.BitmapFactory
@@ -22,6 +23,7 @@ import com.example.work.sql.SpHelper
 import java.io.File
 import java.io.IOException
 import java.util.*
+import kotlin.time.Duration.Companion.days
 
 var imageUriedit: Uri? = null
 var E_CAMERA_CODE = 0
@@ -170,28 +172,26 @@ class DateEdit : AppCompatActivity() {
         calendar: Calendar,
     ) {
         // 直接创建一个DatePickerDialog对话框实例，并将它显示出来
-        DatePickerDialog(activity!!,
+        val date = DatePickerDialog(activity!!,
             themeResId,
-            object : OnDateSetListener {
+            { view, year, monthOfYear, dayOfMonth ->
 
-//                val  builder: AlertDialog.Builder = AlertDialog.Builder(context)
+                //                val  builder: AlertDialog.Builder = AlertDialog.Builder(context)
+
 
                 // 绑定监听器(How the parent is notified that the date is set.)
-                override fun onDateSet(
-                    view: DatePicker?,
-                    year: Int,
-                    monthOfYear: Int,
-                    dayOfMonth: Int,
-                ) {
-                    // 此处得到选择的时间，可以进行你想要的操作
-                    tv.text = "" + year + "-" + (monthOfYear + 1) + "-" + dayOfMonth + ""
-                }
-
+                // 此处得到选择的时间，可以进行你想要的操作
+                tv.text = "" + year + "-" + (monthOfYear + 1) + "-" + dayOfMonth + ""
             } // 设置初始日期
             ,
             calendar.get(Calendar.YEAR),
             calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH)).show()
+            calendar.get(Calendar.DAY_OF_MONTH))
+        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
+        date.datePicker.minDate = calendar.timeInMillis
+//        calendar.clear()
+        date.show()
+
     }
 
     fun showTimePickerDialog(

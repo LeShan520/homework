@@ -116,6 +116,30 @@ class SpHelper (context: Context){
         cursor.close()
         return sb
     }
+    fun querytodo(): ArrayList<String> {
+        val cursor =mWritableDatabase.query("calender", null , null , null, null, null, null)
+        val sb  = ArrayList<String>()
+
+        if (cursor.moveToFirst()){
+            do {
+
+                val dateIndex = cursor.getColumnIndex("date")
+                val date = cursor.getString(dateIndex)
+
+                val stateIndex = cursor.getColumnIndex("state")
+                val state = cursor.getString(stateIndex)
+
+                val cancelIndex = cursor.getColumnIndex("cancel")
+                val cancel = cursor.getString(cancelIndex)
+
+                if (state.toInt()==0 && cancel.toInt()==0)
+                    sb.add(date)
+            }while (cursor.moveToNext())
+        }
+        cursor.close()
+        Log.d("sbb",sb.toString())
+        return sb
+    }
 
     fun query1(a:Int?): String {
         val cursor =mWritableDatabase.query("calender", null, "id=?" , arrayOf("$a"), null, null, null)
@@ -183,7 +207,11 @@ class SpHelper (context: Context){
                 val titleIndex = cursor.getColumnIndex("title")
                 val title = cursor.getString(titleIndex)
 
-                sb.add(Calender(id, date,time,title,uri,content))
+                val cancelIndex = cursor.getColumnIndex("cancel")
+                val cancel = cursor.getString(cancelIndex)
+
+                if(cancel.toInt() == 0)
+                    sb.add(Calender(id, date,time,title,uri,content))
 
             }while (cursor.moveToNext())
         }
@@ -222,7 +250,7 @@ class SpHelper (context: Context){
     }
 
     fun queryDate(a:String, b:String, c:String,): Int {
-        val cursor =mWritableDatabase.query("calender", null, "$a=?" , arrayOf("0"), null, null, null)
+        val cursor =mWritableDatabase.query("calender", null, "$a=?" , arrayOf("1"), null, null, null)
         val date1 = mutableListOf<String>()
 
         var current_date_prior = b
@@ -257,9 +285,8 @@ class SpHelper (context: Context){
                 if (date != ""){
                     if (current_date_prior.replace("-","").toInt() <= date.replace("-","").toInt()&&
                         date.replace("-","").toInt() <= current_date_behind.replace("-","").toInt()){
-                        Log.d("dadwada","adwadawdda")
                         date1.add(date)
-                        Log.d("date221",date1.toString())
+//                        Log.d("date221",date1.toString())
                     }
 
                 }
@@ -268,8 +295,8 @@ class SpHelper (context: Context){
             }while (cursor.moveToNext())
         }
         val count = date1.size
-        Log.d("date222",date1.toString())
-        Log.d("date223",count.toString())
+//        Log.d("date222",date1.toString())
+//        Log.d("date223",count.toString())
         cursor.close()
         return count
     }

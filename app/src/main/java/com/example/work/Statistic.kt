@@ -170,7 +170,7 @@ class Statistic : AppCompatActivity() {
         calendar: Calendar,
     ) {
         // 直接创建一个DatePickerDialog对话框实例，并将它显示出来
-        DatePickerDialog(activity!!,
+        val date = DatePickerDialog(activity!!,
             themeResId,
             object : DatePickerDialog.OnDateSetListener {
 //                val  builder: AlertDialog.Builder = AlertDialog.Builder(context)
@@ -183,97 +183,113 @@ class Statistic : AppCompatActivity() {
                     dayOfMonth: Int,
                 ) {
                     // 此处得到选择的时间，可以进行你想要的操作
-                    if (tv == tvdateshow){
-                        if (tvtimeshow.text.toString() != ""){
-
-                            var current_date = "" + year + "-" + (monthOfYear + 1) + "-" + dayOfMonth + ""
-                            var current_time = tvtimeshow.text
-                            if (current_date.length==9){
-                                if (current_date[6]=='-'){
-                                    current_date=current_date.substring(0,5)+"0"+current_date.substring(5,9)
-                                }
-                                else
-                                    current_date=current_date.substring(0,8)+"0"+current_date.substring(8,9)
-                            }
-                            else if(current_date.length==8)
-                                current_date = current_date.substring(0,5)+"0"+current_date.substring(5,7)+"0"+current_date.substring(7,8)
-                            else
-                                current_date = current_date
-                            if (current_time.length==9){
-                                if (current_time[6]=='-'){
-                                    current_time=current_time.substring(0,5)+"0"+current_time.substring(5,9)
-                                }
-                                else
-                                    current_time=current_time.substring(0,8)+"0"+current_time.substring(8,9)
-                            }
-                            else if(current_time.length==8)
-                                current_time = current_time.substring(0,5)+"0"+current_time.substring(5,7)+"0"+current_time.substring(7,8)
-                            else
-                                current_time = current_time
-
-//                        Log.d("current12",current_time.replace("-","")+"LLLL"+current_date.toString().replace("-",""))
-                            if(current_time.toString().replace("-","").toInt() < current_date.replace("-","").toInt()){
-                                Toast.makeText(view?.context,"初始时间不可晚于结束时间,请重新选择时间", Toast.LENGTH_SHORT).show()
-                                return
-                            }
-                            else{
-                                tv.text = "" + year + "-" + (monthOfYear + 1) + "-" + dayOfMonth + ""
-                                chart()
-                            }
-
-                            chart()
-                        }
-                        else
-                            tv.text = "" + year + "-" + (monthOfYear + 1) + "-" + dayOfMonth + ""
-
-                    }
-
-                    else if (tvdateshow.text.toString()!= ""){
-                        var current_date = tvdateshow.text
-                        var current_time = "" + year + "-" + (monthOfYear + 1) + "-" + dayOfMonth + ""
-                        if (current_date.toString().length==9){
-                            if (current_date[6]=='-'){
-                                current_date=current_date.substring(0,5)+"0"+current_date.substring(5,9)
-                            }
-                            else
-                                current_date=current_date.substring(0,8)+"0"+current_date.substring(8,9)
-                        }
-                        else if(current_date.length==8)
-                            current_date = current_date.substring(0,5)+"0"+current_date.substring(5,7)+"0"+current_date.substring(7,8)
-                        else
-                            current_date = current_date
-                        if (current_time.length==9){
-                            if (current_time[6]=='-'){
-                                current_time=current_time.substring(0,5)+"0"+current_time.substring(5,9)
-                            }
-                            else
-                                current_time=current_time.substring(0,8)+"0"+current_time.substring(8,9)
-                        }
-                        else if(current_time.length==8)
-                            current_time = current_time.substring(0,5)+"0"+current_time.substring(5,7)+"0"+current_time.substring(7,8)
-                        else
-                            current_time = current_time
-
-//                        Log.d("current12",current_time.replace("-","")+"LLLL"+current_date.toString().replace("-",""))
-                        if(current_time.replace("-","").toInt() < current_date.toString().replace("-","").toInt()){
-
-                            Toast.makeText(view?.context,"结束时间不可早于初始时间,请重新选择时间", Toast.LENGTH_SHORT).show()
-                            return
-                        }
-                        else{
-                            tv.text = "" + year + "-" + (monthOfYear + 1) + "-" + dayOfMonth + ""
-                            chart()
-                        }
-                    }
-                    else
+//                    if (tv == tvdateshow){
+//                        if (tvtimeshow.text.toString() != ""){
+//
+//                            var current_date = "" + year + "-" + (monthOfYear + 1) + "-" + dayOfMonth + ""
+//                            var current_time = tvtimeshow.text
+//                            if (current_date.length==9){
+//                                if (current_date[6]=='-'){
+//                                    current_date=current_date.substring(0,5)+"0"+current_date.substring(5,9)
+//                                }
+//                                else
+//                                    current_date=current_date.substring(0,8)+"0"+current_date.substring(8,9)
+//                            }
+//                            else if(current_date.length==8)
+//                                current_date = current_date.substring(0,5)+"0"+current_date.substring(5,7)+"0"+current_date.substring(7,8)
+//                            else
+//                                current_date = current_date
+//                            if (current_time.length==9){
+//                                if (current_time[6]=='-'){
+//                                    current_time=current_time.substring(0,5)+"0"+current_time.substring(5,9)
+//                                }
+//                                else
+//                                    current_time=current_time.substring(0,8)+"0"+current_time.substring(8,9)
+//                            }
+//                            else if(current_time.length==8)
+//                                current_time = current_time.substring(0,5)+"0"+current_time.substring(5,7)+"0"+current_time.substring(7,8)
+//                            else
+//                                current_time = current_time
+//
+////                        Log.d("current12",current_time.replace("-","")+"LLLL"+current_date.toString().replace("-",""))
+//                            if(current_time.toString().replace("-","").toInt() < current_date.replace("-","").toInt()){
+//                                Toast.makeText(view?.context,"初始时间不可晚于结束时间,请重新选择时间", Toast.LENGTH_SHORT).show()
+//                                return
+//                            }
+//                            else{
+//                                tv.text = "" + year + "-" + (monthOfYear + 1) + "-" + dayOfMonth + ""
+//                                chart()
+//                            }
+//
+//                            chart()
+//                        }
+//                        else
+//                            tv.text = "" + year + "-" + (monthOfYear + 1) + "-" + dayOfMonth + ""
+//
+//                    }
+//
+//                    else if (tvdateshow.text.toString()!= ""){
+//                        var current_date = tvdateshow.text
+//                        var current_time = "" + year + "-" + (monthOfYear + 1) + "-" + dayOfMonth + ""
+//                        if (current_date.toString().length==9){
+//                            if (current_date[6]=='-'){
+//                                current_date=current_date.substring(0,5)+"0"+current_date.substring(5,9)
+//                            }
+//                            else
+//                                current_date=current_date.substring(0,8)+"0"+current_date.substring(8,9)
+//                        }
+//                        else if(current_date.length==8)
+//                            current_date = current_date.substring(0,5)+"0"+current_date.substring(5,7)+"0"+current_date.substring(7,8)
+//                        else
+//                            current_date = current_date
+//                        if (current_time.length==9){
+//                            if (current_time[6]=='-'){
+//                                current_time=current_time.substring(0,5)+"0"+current_time.substring(5,9)
+//                            }
+//                            else
+//                                current_time=current_time.substring(0,8)+"0"+current_time.substring(8,9)
+//                        }
+//                        else if(current_time.length==8)
+//                            current_time = current_time.substring(0,5)+"0"+current_time.substring(5,7)+"0"+current_time.substring(7,8)
+//                        else
+//                            current_time = current_time
+//
+////                        Log.d("current12",current_time.replace("-","")+"LLLL"+current_date.toString().replace("-",""))
+//                        if(current_time.replace("-","").toInt() < current_date.toString().replace("-","").toInt()){
+//
+//                            Toast.makeText(view?.context,"结束时间不可早于初始时间,请重新选择时间", Toast.LENGTH_SHORT).show()
+//                            return
+//                        }
+//                        else{
+//                            tv.text = "" + year + "-" + (monthOfYear + 1) + "-" + dayOfMonth + ""
+//                            chart()
+//                        }
+//                    }
+//                    else
                         tv.text = "" + year + "-" + (monthOfYear + 1) + "-" + dayOfMonth + ""
                 }
             } // 设置初始日期
-            ,
-            calendar.get(Calendar.YEAR),
-            calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH))
-            .show()
+            , calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
+        if (tvtimeshow.text.toString()!= "" && tv == tvdateshow){
+            val timedata = tvtimeshow.text.toString().split("-")
+            val maxday = timedata[2].toInt()
+            val maxmonth = timedata[1].toInt()
+            val maxyears = timedata[0].toInt()
+            calendar.set(maxyears, maxmonth-1, maxday)
+            date.datePicker.maxDate = calendar.timeInMillis
+            calendar.clear()
+        }
+
+        if (tvdateshow.text.toString()!= "" && tv == tvtimeshow){
+            val datedata = tvdateshow.text.toString().split("-")
+            val minday = datedata[2].toInt()
+            val minmonth = datedata[1].toInt()
+            val minyears = datedata[0].toInt()
+            calendar.set(minyears,minmonth-1,minday)
+            date.datePicker.minDate = calendar.timeInMillis
+            calendar.clear()
+        }
+        date.show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

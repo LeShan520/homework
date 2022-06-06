@@ -2,6 +2,7 @@ package com.example.work
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.database.Cursor
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -11,7 +12,6 @@ import android.widget.AdapterView
 import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.example.work.calender.DateEdit
 import com.example.work.calender.DateList
 import com.example.work.calender.DatePicker
 import com.example.work.sql.Calender
@@ -22,7 +22,6 @@ import com.haibin.calendarview.CalendarView
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class MainActivity : AppCompatActivity(), CalendarView.OnCalendarSelectListener ,AdapterView.OnItemClickListener{
@@ -46,6 +45,9 @@ class MainActivity : AppCompatActivity(), CalendarView.OnCalendarSelectListener 
         val format1: String = dateFormat1.format(date)
         tvmain.text=format
         select(format1)
+
+        init_data()
+
         val fab :View = findViewById(R.id.fab_main_add)
         fab.setOnClickListener { view->
             val intent = Intent(this, DatePicker::class.java)
@@ -166,5 +168,37 @@ class MainActivity : AppCompatActivity(), CalendarView.OnCalendarSelectListener 
         val format1: String = dateFormat1.format(date)
 
         select(format1)
+    }
+    private fun init_data() {
+        val map: MutableMap<String, Calendar> = HashMap()
+        val helper = SpHelper(this)
+        val date = helper.querytodo()
+        Log.d("date1231",date.toString())
+        for(time in date){
+            val year = time.substring(0, 4).toInt()
+            val month = time.substring(5, 7).toInt()
+            val day = time.substring(8, 10).toInt()
+            Log.d("year11","$year+$month+$day")
+            map[getSchemeCalendar(year, month, day, -0xbf24db, "").toString()] =
+                getSchemeCalendar(year, month, day, -0xbf24db, "")
+        }
+        val calendarView : CalendarView = findViewById(R.id.calendarView)
+        calendarView.setSchemeDate(map)
+    }
+
+    private fun getSchemeCalendar(
+        year: Int,
+        month: Int,
+        day: Int,
+        color: Int,
+        text: String
+    ): Calendar {
+        val calendar = Calendar()
+        calendar.year = year
+        calendar.month = month
+        calendar.day = day
+        calendar.schemeColor = color //如果单独标记颜色、则会使用这个颜色
+        calendar.scheme = text
+        return calendar
     }
 }

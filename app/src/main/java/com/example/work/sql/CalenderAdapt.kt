@@ -86,6 +86,8 @@ class CalenderAdapt(
             if (image.visibility == View.GONE){
                 image.visibility = View.VISIBLE
             }
+            else
+                image.visibility = View.GONE
         }
         tv1.setOnLongClickListener{
             val a=getItem(position)?.id
