@@ -11,7 +11,9 @@ class DataBaseHelper(
 
     override fun onCreate(db: SQLiteDatabase?) {
 //        val sq = "drop table calendar"
-        val sq = "create table calendar (id integer primary key Autoincrement , date varchar(64), time varchar(64), title varchar(64), content varchar(64), uri varchar(64), state integer(2), expired integer(2), cancel integer(2))"
+        val sq = "create table calendar (id integer primary key Autoincrement , date varchar(64)," +
+                " time varchar(64), title varchar(64), content varchar(64), uri varchar(64)," +
+                " state integer(2), expired integer(2), cancel integer(2))"
         db?.execSQL(sq)
 
     }

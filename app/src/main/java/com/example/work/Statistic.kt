@@ -10,7 +10,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.DatePicker
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.work.calender.DateList
 import com.example.work.sql.SpHelper
@@ -33,7 +32,7 @@ class Statistic : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_stactistic)
+        setContentView(R.layout.activity_statistic)
 
         tvdateshow = findViewById(R.id.tv_dateshow_statistic)
         tvtimeshow = findViewById(R.id.tv_timeshow_statistic)
@@ -42,10 +41,16 @@ class Statistic : AppCompatActivity() {
 
         tvdateshow.setOnClickListener {
             showDatePickerDialog(this, 2, tvdateshow, Calendar.getInstance())
+            if (tvtimeshow.text.toString()!="" && tvtimeshow.text.toString()!="") {
+                chartInit(tvdateshow.text.toString(), tvtimeshow.text.toString())
+            }
         }
 
         tvtimeshow.setOnClickListener {
             showDatePickerDialog(this, 2, tvtimeshow, Calendar.getInstance())
+            if (tvtimeshow.text.toString()!="" && tvtimeshow.text.toString()!="") {
+                chartInit(tvdateshow.text.toString(), tvtimeshow.text.toString())
+            }
         }
     }
 
@@ -290,6 +295,12 @@ class Statistic : AppCompatActivity() {
             calendar.clear()
         }
         date.show()
+
+        if (tvtimeshow.text.toString()!="" && tvtimeshow.text.toString()!=""){
+            chartInit(tvdateshow.text.toString(),tvtimeshow.text.toString())
+        }
+
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
